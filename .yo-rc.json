@@ -1,0 +1,7 @@
+{
+  "generator-phaser": {
+    "projectName": "automatrovagattino",
+    "esVersion": 6,
+    "gameFolder": "boilerplate"
+  }
+}

@@ -1,0 +1,14 @@
+Da fare:
+- Gestione caratteri, colori e indici ripetuti
+- Mettere box per frase
+- Mettere intro
+- Ridurre il campo di gioco
+- Contornare il campo di gioco
+- Togliere almeno 80px per il box testo
+- Movimento da basato sul testo, a basato su ripetizioni lente (counter)
+
+Version 1.1:
+- Mettere schermo opzioni
+- Mettere parametri opzioni
+- Divisione frasi in categorie
+- Fare anche il movimento del personaggio cell-based

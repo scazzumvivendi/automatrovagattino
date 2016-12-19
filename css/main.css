@@ -1,0 +1,18 @@
+@font-face {
+    font-family:'fontVGA';
+    src: url(../fonts/LessPerfectDOSVGA.ttf);
+}
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  cursor: none;
+}
+#bug-fixer{
+    font-family:"fontVGA";
+    visibility:hidden;
+}

@@ -3,15 +3,15 @@ import CharacterUtil from '../util/characterUtil'
 export default class BoundsUtil {
 
     constructor(heightCharacter, widthCharacter, heightGame, widthGame) {
-        this.heightCharacter = heightCharacter / 2;
+        this.heightCharacter = heightCharacter;
         this.widthCharacter = widthCharacter;
-        this.heightGame = heightGame;
+        this.heightGame = heightGame - 100;
         this.widthGame = widthGame;
         this.characterUtil = new CharacterUtil();
     }
 
     getGameBounds() {
-        var x = 100;
+        var x = 50;
         var y = 50;
         var xStage = -1;
         var yStage = -1;
@@ -30,24 +30,35 @@ export default class BoundsUtil {
         return points;
     }
 
-    getNumberCells() {
+    getMaximumNumberCells() {
         var cellsX = Math.floor(this.widthGame / this.widthCharacter) - 2;
-        var cellsY = Math.floor(this.heightGame / this.heightCharacter) - 2;
+        var cellsY = Math.floor(this.heightGame / this.heightCharacter);
+        return { cellsX: cellsX, cellsY: cellsY };
+    }
+
+    getNumberCells() {
+        var points = this.getGameBounds();
+        var cellsX = Math.floor((points[2].x-points[0].x) / this.widthCharacter) - 2;
+        var cellsY = Math.floor((points[3].y-points[2].y) / this.heightCharacter);
         return { cellsX: cellsX, cellsY: cellsY };
     }
 
     getCell(object) {
 
-        let cellX = object.x/this.widthCharacter;
-        let cellY = object.y/this.heightCharacter;
+        var points = this.getGameBounds();
+
+        let cellX = (object.x- points[0].x)/this.widthCharacter;
+        let cellY = (object.y- points[0].y)/this.heightCharacter ;
         
         return { x: Math.floor(cellX), y: Math.floor(cellY) };
     }
 
     setCell(object, cellX, cellY) {
 
-        object.x = cellX * this.widthCharacter;
-        object.y = cellY * this.heightCharacter;
+        var points = this.getGameBounds();
+
+        object.x = cellX * this.widthCharacter + points[0].x;
+        object.y = cellY * this.heightCharacter + points[0].y;
 
         return object;
     }

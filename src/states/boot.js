@@ -42,7 +42,6 @@ class Boot extends Phaser.State {
         const varUtil = new VarUtil();
         const characterUtil = new CharacterUtil();
         const bounds = boundsUtil.getGameBounds();
-        boundsUtil.getNumberCells();
         text.destroy();
         
         this.game.global = {

@@ -10,6 +10,7 @@ export default class CharacterUtil {
             instance = this;
             this.listaPersonaggi = [];
             this.varUtil = new VarUtil();
+            this.gattino = false;
         }
         return instance;
     }
@@ -17,7 +18,12 @@ export default class CharacterUtil {
     createCharacter() {
         var personaggio = new Personaggio();
         personaggio.carattere = this.getRandomCharacter();
-        personaggio.frase = this.getRandomQuote();
+        if(!this.gattino){
+    		personaggio.frase = 'Hai trovato il gattino!';	
+    		this.gattino = true;
+    	} else{
+    		personaggio.frase=this.getRandomQuote();
+    	}
         personaggio.colore = this.getRandomColor();
         return personaggio;
     }
@@ -45,7 +51,7 @@ export default class CharacterUtil {
 	}
 
 	getRandomCharacter(){
-		var values = '1234567890!£$%&/()=qwertyuiopasdfghjklzxcvbnm,.-QWERTYUIOPASDFGHJKLZXCVBNMòàè+ùì?^ç°*é><';
+		var values = '1234567890!£$%&/()=qwertyuiopasdfghjklzxcvbnm,.-QWERTYUIOPASDFGHJKLZXCVBNM+?^°*é><';
 		return values[this.varUtil.getRandomIndex(values.length)];
 	}
 
@@ -54,10 +60,13 @@ export default class CharacterUtil {
     				'Tony Santagata su un monociclo', 
     				'John Lennon con una bottiglia di Vecchia Romagna piena di monetine',
     				'Gli occhiali da sole di Elwood Blues',
-    				'Una biglia con Mario Cipollini dentro che urla "Liberatemi!"',
+    				'Una biglia con un ciclista dentro che urla "Liberatemi!"',
     				'Un anello di una bottiglietta di plastica',
-    				'Un cepello di Donald Trump. Vero.',
-    				'Una cartolina: "Saluti da Quarto Oggiaro"'];
+    				'Un capello di Donald Trump. Vero.',
+    				'Una cartolina: "Saluti da Quarto Oggiaro"',
+    				"Claudio Bisio che corre dietro la Metro Verde",
+    				'Un paio di pantaloni scozzesi',
+    				'Un foglietto con su scritto: "Vota Bill Murray"'];
     	return quotes[this.varUtil.getRandomIndex(quotes.length)];
     }
 }

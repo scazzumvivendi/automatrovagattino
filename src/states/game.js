@@ -10,11 +10,11 @@ class Game extends Phaser.State {
         this.characterUtil = this.game.global.characterUtil;
         this.boundsUtil = this.game.global.boundsUtil;
         this.varUtil = this.game.global.varUtil;
+        var cursors = this.game.global.cursors;
         var protagonistaText = this.add.text(0, 0, '#', this.game.global.fontStyleOld);
         this.character = protagonistaText;
         this.fraseText = this.add.text(this.game.width * 0.5, this.game.height - 75, '', this.game.global.fontStyleOld);
-        this.boundsUtil.setCell(protagonistaText, this.boundsUtil.getNumberCells().cellsX / 2, this.boundsUtil.getNumberCells().cellsY / 2);
-
+        this.boundsUtil.setCell(protagonistaText, this.varUtil.getRandomIndex(this.boundsUtil.getNumberCells().cellsX), this.varUtil.getRandomIndex(this.boundsUtil.getNumberCells().cellsY));
         //numero di personaggi (da cambiare)
         const nPersonaggi = 10;
         console.log("numero celle X:" + this.boundsUtil.getNumberCells().cellsX + " ,numero celle Y:" + this.boundsUtil.getNumberCells().cellsY);
@@ -28,7 +28,14 @@ class Game extends Phaser.State {
             personaggioText.addColor(personaggio.colore, 0);
             personaggio.cellaX = randomX;
             personaggio.cellaY = randomY;
-
+            if (personaggio.cellaX === undefined){
+              personaggio.cellaX = 1;
+            } if (personaggio.cellaY === undefined){
+              personaggio.cellaY = 1;
+            }
+            if(personaggio.frase === undefined){
+              console.log("wat");
+            }
             if (this.boundsUtil.isCellEmpty(personaggio.cellaX, personaggio.cellaY)) {
                 this.boundsUtil.setCell(personaggioText, personaggio.cellaX, personaggio.cellaY);
                 console.log("cellaX:" + personaggio.cellaX + " ,cellaY:" + personaggio.cellaY)
@@ -36,21 +43,23 @@ class Game extends Phaser.State {
             } else {
                 personaggioText.destroy();
                 i--;
+                console.log("personaggio rimosso");
             }
         }
         //creazione bordi
-        for(let cellX=0;cellX<this.boundsUtil.getNumberCells().cellsX+1;cellX++){
+        for (let cellX = 0.25; cellX < this.boundsUtil.getNumberCells().cellsX; cellX++) {
             let bordoXZero = this.add.text(0, 0, '-', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoXZero,cellX,0);
+            this.boundsUtil.setCell(bordoXZero, cellX, -1);
             let bordoXFine = this.add.text(0, 0, '-', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoXFine,cellX,this.boundsUtil.getNumberCells().cellsY);
+            this.boundsUtil.setCell(bordoXFine, cellX, this.boundsUtil.getNumberCells().cellsY+2);
         }
-        for(let cellY=0.5;cellY<this.boundsUtil.getNumberCells().cellsY;cellY++){
+        for (let cellY = 0.75; cellY < this.boundsUtil.getNumberCells().cellsY+2; cellY++) {
             let bordoYZero = this.add.text(0, 0, '¦', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoYZero,0,cellY);
+            this.boundsUtil.setCell(bordoYZero, 0, cellY-1);
             let bordoYFine = this.add.text(0, 0, '¦', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoYFine,this.boundsUtil.getNumberCells().cellsX+1,cellY);
+            this.boundsUtil.setCell(bordoYFine, this.boundsUtil.getNumberCells().cellsX, cellY-1);
         }
+
         console.log(this.characterUtil.getListCharacters())
     }
 
@@ -64,26 +73,26 @@ class Game extends Phaser.State {
         var varUtil = this.varUtil;
         var gameWidth = this.game.width;
         var thisUpdate = this;
-        var endGame = function(){
-           thisUpdate.game.state.start('menu');
+        var endGame = function() {
+            thisUpdate.game.state.start('menu');
         };
 
         cursors.up.pressed = false;
         cursors.up.onDown.add(function() {
             if (!cursors.up.pressed) {
-                var cellaProtagonista = boundsUtil.getCell(text);
+              var protagonista = text;
+                var cellaProtagonista = boundsUtil.getCell(protagonista);
                 console.log(cellaProtagonista);
-                if (boundsUtil.isCellEmpty(cellaProtagonista.x, cellaProtagonista.y - 1)) {
-                    if (text.y - text.height / 2 > bounds[0].y) {
-                        text.y = text.y - text.height / 2;
-                        fraseText.text = '';
-                    }
+                if (boundsUtil.isCellEmpty(cellaProtagonista.x, cellaProtagonista.y - 1) && cellaProtagonista.y>0) {
+                      boundsUtil.setCell(protagonista, cellaProtagonista.x, cellaProtagonista.y - 1);
+                      fraseText.text = '';
+                    
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x, cellaProtagonista.y - 1);
                     fraseText.text = frase;
-                    varUtil.centerObject(fraseText,'x',gameWidth,null);
-                    if(frase==='Hai trovato il gattino!'){
-                      endGame();   
+                    varUtil.centerObject(fraseText, 'x', gameWidth, null);
+                    if (frase === 'Hai trovato il gattino!') {
+                        endGame();
                     }
                     console.log(frase);
                 }
@@ -104,11 +113,11 @@ class Game extends Phaser.State {
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x, cellaProtagonista.y + 1);
                     fraseText.text = frase;
-                    varUtil.centerObject(fraseText,'x',gameWidth,null);
-                    if(frase==='Hai trovato il gattino!'){
-                      endGame();   
+                    varUtil.centerObject(fraseText, 'x', gameWidth, null);
+                    if (frase === 'Hai trovato il gattino!') {
+                        endGame();
                     }
-                     console.log(frase);
+                    console.log(frase);
                 }
                 cursors.down.pressed = true;
             }
@@ -127,9 +136,9 @@ class Game extends Phaser.State {
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x - 1, cellaProtagonista.y);
                     fraseText.text = frase;
-                    varUtil.centerObject(fraseText,'x',gameWidth,null);
-                    if(frase==='Hai trovato il gattino!'){
-                      endGame();   
+                    varUtil.centerObject(fraseText, 'x', gameWidth, null);
+                    if (frase === 'Hai trovato il gattino!') {
+                        endGame();
                     }
                     console.log(frase);
                 }
@@ -151,13 +160,12 @@ class Game extends Phaser.State {
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x + 1, cellaProtagonista.y);
                     fraseText.text = frase;
-                    varUtil.centerObject(fraseText,'x',gameWidth,null);
-                    if(frase==='Hai trovato il gattino!'){ //refactor
-                      endGame();   
+                    varUtil.centerObject(fraseText, 'x', gameWidth, null);
+                    if (frase === 'Hai trovato il gattino!') { //refactor
+                        endGame();
                     }
                     console.log(frase);
                 }
-
                 cursors.right.pressed = true;
             }
         });

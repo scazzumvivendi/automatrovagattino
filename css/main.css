@@ -1,6 +1,6 @@
 @font-face {
     font-family:'fontVGA';
-    src: url(../fonts/LessPerfectDOSVGA.ttf);
+    src: url(../assets/fonts/LessPerfectDOSVGA.ttf);
 }
 body {
   width: 100%;

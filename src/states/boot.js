@@ -9,7 +9,6 @@ class Boot extends Phaser.State {
     }
 
     preload() {
-        this.load.image('preloader', 'assets/preloader.gif');
     }
 
     create() {
@@ -43,7 +42,7 @@ class Boot extends Phaser.State {
         const characterUtil = new CharacterUtil();
         const bounds = boundsUtil.getGameBounds();
         text.destroy();
-        
+
         this.game.global = {
             fontStyleOld,
             cursors, 

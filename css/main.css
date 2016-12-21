@@ -15,4 +15,5 @@ canvas {
 #bug-fixer{
     font-family:"fontVGA";
     visibility:hidden;
+    font-size:0.0001px;
 }

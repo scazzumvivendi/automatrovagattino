@@ -1,16 +1,10 @@
-Issues:
-- Gestione undefined nelle celle dei personaggi
-
 Da fare:
-- Gestione caratteri, colori e indici ripetuti
 - Mettere intro
-- Gestione del campo di gioco
-- Movimento del personaggio basato su ripetizioni lente (counter)
+- Animazione finale + premere tasto per chiudere
 
 Version 1.0:
 - Mettere schermo opzioni
 - Mettere parametri opzioni
 - Divisione frasi in categorie
-- Fare anche il movimento del personaggio cell-based
-- Refactor del codice: this ha lo stesso problema di angular
-- Gestione collisioni pixel-based
+- Refactor del codice: p.es. this ha lo stesso problema di angular
+

@@ -28,13 +28,14 @@ class Game extends Phaser.State {
             personaggioText.addColor(personaggio.colore, 0);
             personaggio.cellaX = randomX;
             personaggio.cellaY = randomY;
-            if (personaggio.cellaX === undefined){
-              personaggio.cellaX = 1;
-            } if (personaggio.cellaY === undefined){
-              personaggio.cellaY = 1;
+            if (personaggio.cellaX === undefined) {
+                personaggio.cellaX = 1;
             }
-            if(personaggio.frase === undefined){
-              console.log("wat");
+            if (personaggio.cellaY === undefined) {
+                personaggio.cellaY = 1;
+            }
+            if (personaggio.frase === undefined) {
+                console.log("wat");
             }
             if (this.boundsUtil.isCellEmpty(personaggio.cellaX, personaggio.cellaY)) {
                 this.boundsUtil.setCell(personaggioText, personaggio.cellaX, personaggio.cellaY);
@@ -50,23 +51,24 @@ class Game extends Phaser.State {
         for (let cellX = 0.25; cellX < this.boundsUtil.getNumberCells().cellsX; cellX++) {
             let bordoXZero = this.add.text(0, 0, '-', this.game.global.fontStyleOld);
             this.boundsUtil.setCell(bordoXZero, cellX, -1);
-            let bordoXFine = this.add.text(0, 0, '-', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoXFine, cellX, this.boundsUtil.getNumberCells().cellsY+2);
+            let bordoXFine = this.add.text(0, 0, '- ', this.game.global.fontStyleOld);
+            this.boundsUtil.setCell(bordoXFine, cellX, this.boundsUtil.getNumberCells().cellsY + 2);
         }
-        for (let cellY = 0.75; cellY < this.boundsUtil.getNumberCells().cellsY+2; cellY++) {
+        for (let cellY = 0.75; cellY < this.boundsUtil.getNumberCells().cellsY + 2; cellY++) {
             let bordoYZero = this.add.text(0, 0, '¦', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoYZero, 0, cellY-1);
+            this.boundsUtil.setCell(bordoYZero, 0, cellY - 1);
             let bordoYFine = this.add.text(0, 0, '¦', this.game.global.fontStyleOld);
-            this.boundsUtil.setCell(bordoYFine, this.boundsUtil.getNumberCells().cellsX, cellY-1);
+            this.boundsUtil.setCell(bordoYFine, this.boundsUtil.getNumberCells().cellsX, cellY - 1);
         }
 
+        this.timer = this.game.time.create(false);
         console.log(this.characterUtil.getListCharacters())
     }
 
     update() {
         var cursors = this.game.global.cursors;
         var bounds = this.game.global.bounds;
-        var text = this.character; //refactor
+        var protagonista = this.character; //refactor
         var boundsUtil = this.game.global.boundsUtil;
         var characterUtil = this.game.global.characterUtil;
         var fraseText = this.fraseText;
@@ -76,17 +78,17 @@ class Game extends Phaser.State {
         var endGame = function() {
             thisUpdate.game.state.start('menu');
         };
+        var timer = this.timer;
 
         cursors.up.pressed = false;
         cursors.up.onDown.add(function() {
             if (!cursors.up.pressed) {
-              var protagonista = text;
                 var cellaProtagonista = boundsUtil.getCell(protagonista);
                 console.log(cellaProtagonista);
-                if (boundsUtil.isCellEmpty(cellaProtagonista.x, cellaProtagonista.y - 1) && cellaProtagonista.y>0) {
-                      boundsUtil.setCell(protagonista, cellaProtagonista.x, cellaProtagonista.y - 1);
-                      fraseText.text = '';
-                    
+                if (boundsUtil.isCellEmpty(cellaProtagonista.x, cellaProtagonista.y - 1) && cellaProtagonista.y > 0) {
+                    boundsUtil.setCell(protagonista, cellaProtagonista.x, cellaProtagonista.y - 1);
+                    fraseText.text = '';
+
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x, cellaProtagonista.y - 1);
                     fraseText.text = frase;
@@ -96,20 +98,26 @@ class Game extends Phaser.State {
                     }
                     console.log(frase);
                 }
+                if (this.timer.running) {
+                    this.timer.stop();
+                }
+                this.timer.add(Phaser.Timer.SECOND * 0.4, function() {
+                    cursors.up.reset(true);
+                    this.timer.stop();
+                    console.log("timer scaduto");
+                }, this);
+                this.timer.start();
                 cursors.up.pressed = true;
             }
-        });
+        }, this);
         cursors.down.pressed = false;
         cursors.down.onDown.add(function() {
             if (!cursors.down.pressed) {
-                var cellaProtagonista = boundsUtil.getCell(text);
+                var cellaProtagonista = boundsUtil.getCell(protagonista);
                 console.log(cellaProtagonista);
                 if (boundsUtil.isCellEmpty(cellaProtagonista.x, cellaProtagonista.y + 1)) {
-                    if (text.y - text.height / 2 < bounds[3].y) {
-                        console.log("giù");
-                        text.y = text.y + text.height / 2;
-                        fraseText.text = '';
-                    }
+                    boundsUtil.setCell(protagonista, cellaProtagonista.x, cellaProtagonista.y + 1);
+                    fraseText.text = '';
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x, cellaProtagonista.y + 1);
                     fraseText.text = frase;
@@ -119,20 +127,26 @@ class Game extends Phaser.State {
                     }
                     console.log(frase);
                 }
+                if (this.timer.running) {
+                    this.timer.stop();
+                }
+                this.timer.add(Phaser.Timer.SECOND * 0.4, function() {
+                    cursors.down.reset(true);
+                    this.timer.stop();
+                    console.log("timer scaduto");
+                }, this);
+                this.timer.start();
                 cursors.down.pressed = true;
             }
-        });
+        }, this);
         cursors.left.pressed = false;
         cursors.left.onDown.add(function() {
             if (!cursors.left.pressed) {
-                var cellaProtagonista = boundsUtil.getCell(text);
+                var cellaProtagonista = boundsUtil.getCell(protagonista);
                 console.log(cellaProtagonista);
                 if (boundsUtil.isCellEmpty(cellaProtagonista.x - 1, cellaProtagonista.y)) {
-                    if (text.x - text.width > bounds[0].x) {
-                        console.log("sinistra");
-                        text.x = text.x - text.width;
-                        fraseText.text = '';
-                    }
+                    boundsUtil.setCell(protagonista, cellaProtagonista.x - 1, cellaProtagonista.y);
+                    fraseText.text = '';
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x - 1, cellaProtagonista.y);
                     fraseText.text = frase;
@@ -142,33 +156,47 @@ class Game extends Phaser.State {
                     }
                     console.log(frase);
                 }
-
+                if (this.timer.running) {
+                    this.timer.stop();
+                }
+                this.timer.add(Phaser.Timer.SECOND * 0.4, function() {
+                    cursors.left.reset(true);
+                    this.timer.stop();
+                    console.log("timer scaduto");
+                }, this);
+                this.timer.start();
                 cursors.left.pressed = true;
             }
-        });
+        }, this);
         cursors.right.pressed = false;
         cursors.right.onDown.add(function() {
             if (!cursors.right.pressed) {
-                var cellaProtagonista = boundsUtil.getCell(text);
+                var cellaProtagonista = boundsUtil.getCell(protagonista);
                 console.log(cellaProtagonista);
                 if (boundsUtil.isCellEmpty(cellaProtagonista.x + 1, cellaProtagonista.y)) {
-                    if (text.x + text.width < bounds[3].x) {
-                        console.log("destra");
-                        text.x = text.x + text.width;
-                        fraseText.text = '';
-                    }
+                    boundsUtil.setCell(protagonista, cellaProtagonista.x + 1, cellaProtagonista.y);
+                    fraseText.text = '';
                 } else {
                     let frase = characterUtil.getCharacterQuote(cellaProtagonista.x + 1, cellaProtagonista.y);
                     fraseText.text = frase;
                     varUtil.centerObject(fraseText, 'x', gameWidth, null);
-                    if (frase === 'Hai trovato il gattino!') { //refactor
+                    if (frase === 'Hai trovato il gattino!') {
                         endGame();
                     }
                     console.log(frase);
                 }
+                if (this.timer.running) {
+                    this.timer.stop();
+                }
+                this.timer.add(Phaser.Timer.SECOND * 0.4, function() {
+                    cursors.right.reset(true);
+                    this.timer.stop();
+                    console.log("timer scaduto");
+                }, this);
+                this.timer.start();
                 cursors.right.pressed = true;
             }
-        });
+        }, this);
     };
 
     endGame() {

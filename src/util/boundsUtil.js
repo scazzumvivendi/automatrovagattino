@@ -25,6 +25,7 @@ export default class BoundsUtil {
             yStage = (this.heightGame - this.heightCharacter * y) / 2;
             y--;
         }
+        yStage+=5;
 
         var points = [{ x: xStage, y: yStage }, { x: xStage, y: this.heightCharacter * y + yStage }, { x: this.widthCharacter * x + xStage, y: yStage }, { x: this.widthCharacter * x+xStage, y: this.heightCharacter * y +yStage }];
         return points;

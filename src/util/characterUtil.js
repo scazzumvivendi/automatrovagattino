@@ -54,7 +54,13 @@ export default class CharacterUtil {
     getRandomColor() {
         var values = ['00', '33', '66', '99', 'cc', 'ff'];
         var l = values.length;
-        return '#' + values[this.varUtil.getRandomIndex(l)] + values[this.varUtil.getRandomIndex(l)] + values[this.varUtil.getRandomIndex(l)];
+        var color = '#' + values[this.varUtil.getRandomIndex(l)] + values[this.varUtil.getRandomIndex(l)] + values[this.varUtil.getRandomIndex(l)];
+        if (color==='#000000'){
+            console.log ("E' uscito" + color);
+            return getRandomColor();
+        } else {
+            return color;
+        }
     }
 
     getRandomCharacter() {

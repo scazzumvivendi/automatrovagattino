@@ -51,13 +51,21 @@ export default class CharacterUtil {
         }
     }
 
+    getCharacterCharacter(cellX, cellY) {
+        for (let personaggio of this.listaPersonaggi) { //modificare con arrow function
+            if (cellX === personaggio.cellaX && cellY === personaggio.cellaY) {
+                return personaggio;
+            }
+        }
+    }
+
     getRandomColor() {
         var values = ['00', '33', '66', '99', 'cc', 'ff'];
         var l = values.length;
         var color = '#' + values[this.varUtil.getRandomIndex(l)] + values[this.varUtil.getRandomIndex(l)] + values[this.varUtil.getRandomIndex(l)];
         if (color==='#000000'){
             console.log ("E' uscito" + color);
-            return getRandomColor();
+            return this.getRandomColor();
         } else {
             return color;
         }
@@ -82,7 +90,9 @@ export default class CharacterUtil {
                 'Un paio di pantaloni scozzesi',
                 'Un foglietto con su scritto: "Vota Bill Murray"',
                 'Una ruota di bicicletta legata ad un palo',
-                'Una 126 Turbo'
+                'Una 126 Turbo',
+                'Un libro di barzellette di Pippo Franco',
+                'Al Bano che canta con un grappolo d\'uva in mano'
             ];
         }
 
@@ -96,5 +106,9 @@ export default class CharacterUtil {
             this.listaFrasi.push(candidate);
             return candidate;
         }
+    }
+
+    reset(){
+        instance = null;
     }
 }

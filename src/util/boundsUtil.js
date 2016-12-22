@@ -3,9 +3,9 @@ import CharacterUtil from '../util/characterUtil'
 export default class BoundsUtil {
 
     constructor(heightCharacter, widthCharacter, heightGame, widthGame) {
-        this.heightCharacter = heightCharacter/2;
+        this.heightCharacter = heightCharacter / 2;
         this.widthCharacter = widthCharacter;
-        this.heightGame = heightGame - 150;
+        this.heightGame = heightGame - 175;
         this.widthGame = widthGame;
         this.characterUtil = new CharacterUtil();
     }
@@ -25,9 +25,9 @@ export default class BoundsUtil {
             yStage = (this.heightGame - this.heightCharacter * y) / 2;
             y--;
         }
-        yStage+=5;
+        yStage += 5;
 
-        var points = [{ x: xStage, y: yStage }, { x: xStage, y: this.heightCharacter * y + yStage }, { x: this.widthCharacter * x + xStage, y: yStage }, { x: this.widthCharacter * x+xStage, y: this.heightCharacter * y +yStage }];
+        var points = [{ x: xStage, y: yStage }, { x: xStage, y: this.heightCharacter * y + yStage }, { x: this.widthCharacter * x + xStage, y: yStage }, { x: this.widthCharacter * x + xStage, y: this.heightCharacter * y + yStage }];
         return points;
     }
 
@@ -39,8 +39,8 @@ export default class BoundsUtil {
 
     getNumberCells() {
         var points = this.getGameBounds();
-        var cellsX = Math.floor((points[2].x-points[0].x) / this.widthCharacter);
-        var cellsY = Math.floor((points[3].y-points[2].y) / this.heightCharacter);
+        var cellsX = Math.floor((points[2].x - points[0].x) / this.widthCharacter);
+        var cellsY = Math.floor((points[3].y - points[2].y) / this.heightCharacter);
         return { cellsX: cellsX, cellsY: cellsY };
     }
 
@@ -48,19 +48,21 @@ export default class BoundsUtil {
 
         var points = this.getGameBounds();
 
-        let cellX = (object.x- points[0].x)/this.widthCharacter;
-        let cellY = (object.y- points[0].y)/this.heightCharacter;
-        
+        let cellX = (object.x - points[0].x) / this.widthCharacter;
+        let cellY = (object.y - points[0].y) / this.heightCharacter;
+
         return { x: Math.floor(cellX), y: Math.floor(cellY) };
     }
 
     setCell(object, cellX, cellY) {
 
         var points = this.getGameBounds();
-
-        object.x = cellX * this.widthCharacter + points[0].x;
-        object.y = cellY * this.heightCharacter + points[0].y;
-
+        if (cellX !== null) {
+            object.x = cellX * this.widthCharacter + points[0].x;
+        }
+        if (cellY !== null) {
+            object.y = cellY * this.heightCharacter + points[0].y;
+        }
         return object;
     }
 

@@ -1,7 +1,3 @@
-Da fare:
-- Mettere intro
-- Animazione finale + premere tasto per chiudere
-
 Version 1.0:
 - Mettere schermo opzioni
 - Mettere parametri opzioni

@@ -35,11 +35,11 @@ class Boot extends Phaser.State {
 
     initGlobalVariables() {
         var cursors = this.game.input.keyboard.createCursorKeys();
-        var fontStyleOld = { font: "30pt fontVGA", fill: "#ffffff", shadowOffsetX: 0, shadowOffsetY: 0, shadowBlur: 8, shadowColor: '#000000' };
+        var fontStyleOld = { font: "25pt fontVGA", fill: "#ffffff", shadowOffsetX: 0, shadowOffsetY: 0, shadowBlur: 8, shadowColor: '#000000' };
         var text = this.add.text(this.game.width * 0.5, this.game.height * 0.5, '?', fontStyleOld);
         const boundsUtil = new BoundsUtil(text.height, text.width,this.game.height, this.game.width);
         const varUtil = new VarUtil();
-        const characterUtil = new CharacterUtil();
+        const characterUtil = new CharacterUtil(true);
         const bounds = boundsUtil.getGameBounds();
         text.destroy();
 
